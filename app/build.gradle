@@ -1,0 +1,99 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+android {
+    namespace = 'com.github.pantherrobotics.panthercommandlib'
+    compileSdk = 34
+    
+    defaultConfig {
+        minSdk = 24
+        targetSdk = 34
+    }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+    
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+    
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+    // FTC SDK dependencies
+    compileOnly 'org.firstinspires.ftc:RobotCore:10.1.0'
+    compileOnly 'org.firstinspires.ftc:Hardware:10.1.0'
+    compileOnly 'org.firstinspires.ftc:FtcCommon:10.1.0'
+    
+    // Android dependencies
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                
+                groupId = 'com.github.pantherrobotics'
+                artifactId = 'panthercommandlib'
+                version = '1.0.0'
+                
+                pom {
+                    name = 'PantherCommandLib'
+                    description = 'A command-based library for FTC robotics'
+                    url = 'https://github.com/pantherrobotics/PantherCommandLib'
+                    
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+                    
+                    developers {
+                        developer {
+                            id = 'pantherrobotics'
+                            name = 'Panther Robotics'
+                        }
+                    }
+                    
+                    scm {
+                        connection = 'scm:git:git://github.com/pantherrobotics/PantherCommandLib.git'
+                        developerConnection = 'scm:git:ssh://github.com/pantherrobotics/PantherCommandLib.git'
+                        url = 'https://github.com/pantherrobotics/PantherCommandLib'
+                    }
+                }
+            }
+        }
+        
+        repositories {
+            mavenLocal()
+        }
+    }
+}

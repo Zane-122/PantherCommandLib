@@ -1,0 +1,53 @@
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Android
+*.iml
+*.apk
+*.ap_
+*.dex
+local.properties
+.idea/
+.DS_Store
+captures/
+*.class
+
+# IntelliJ
+out/
+
+# Built application files
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+
+# Maven
+target/
+release.properties
+pom.xml.*
+
+# Log Files
+*.log
+
+# Android Studio/IntelliJ
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
