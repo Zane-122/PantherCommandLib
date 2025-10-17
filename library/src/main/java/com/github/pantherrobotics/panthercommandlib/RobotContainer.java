@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.panthercommandlib;
+package com.github.pantherrobotics.panthercommandlib;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.panthercommandlib.commands.CommandRunner;
-import org.firstinspires.ftc.panthercommandlib.subsystems.Subsystem;
-import org.firstinspires.ftc.panthercommandlib.subsystems.SubsystemManager;
-import org.firstinspires.ftc.panthercommandlib.triggers.TriggerHandler;
+import com.github.pantherrobotics.panthercommandlib.commands.CommandRunner;
+import com.github.pantherrobotics.panthercommandlib.subsystems.Subsystem;
+import com.github.pantherrobotics.panthercommandlib.subsystems.SubsystemManager;
+import com.github.pantherrobotics.panthercommandlib.triggers.TriggerHandler;
 
 public abstract class RobotContainer extends OpMode {
 

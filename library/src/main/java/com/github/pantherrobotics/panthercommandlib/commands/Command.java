@@ -135,9 +135,7 @@ public abstract class Command {
         return nextCommands;
     }
 
-    public
-
-    Command getDeadlineCommand() {
+    public Command getDeadlineCommand() {
         return deadline;
     }
 }
