@@ -11,6 +11,8 @@ android {
         minSdk = 24
         targetSdk = 34
     }
+
+    
     
     buildTypes {
         release {
@@ -48,7 +50,8 @@ dependencies {
     compileOnly 'org.firstinspires.ftc:FtcCommon:10.1.0'
     
     // Android dependencies
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+
     
     // Testing
     testImplementation 'junit:junit:4.13.2'
