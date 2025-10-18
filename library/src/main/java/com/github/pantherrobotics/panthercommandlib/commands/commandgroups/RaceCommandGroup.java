@@ -20,7 +20,6 @@ public class RaceCommandGroup extends CommandGroup {
         }
     }
 
-
     @Override
     public final void update() {
         for (Command command : commands) {

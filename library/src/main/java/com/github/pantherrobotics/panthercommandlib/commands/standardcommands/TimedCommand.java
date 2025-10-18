@@ -24,4 +24,7 @@ public class TimedCommand extends Command {
     public boolean isFinished() {
         return commandWithDeadline.isFinished();
     }
+
+    @Override
+    public void init() {}
 }

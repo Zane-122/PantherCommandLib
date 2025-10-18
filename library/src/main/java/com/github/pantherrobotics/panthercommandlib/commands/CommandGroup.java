@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public abstract class CommandGroup extends Command {
     protected final List<Command> commands;
-
+    
     /**
      * Group of commands that can run in different ways
      *
@@ -35,6 +35,9 @@ public abstract class CommandGroup extends Command {
             }
         }
     }
+
+    @Override
+    public void init() {}; 
 
     // ----------------------------------
 
