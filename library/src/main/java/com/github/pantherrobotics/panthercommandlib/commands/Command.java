@@ -27,7 +27,7 @@ public abstract class Command {
      * The init function should be running code that you want to happen right when the command is started.
      * This will only run once, before update begins to run.
      */
-    public void init() {};
+    public abstract void init();
 
     /**
      * This code gets run every few milliseconds. This is basically a loop.
