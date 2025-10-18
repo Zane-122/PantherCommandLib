@@ -6,10 +6,10 @@ plugins {
 android {
     namespace = 'com.github.pantherrobotics.panthercommandlib'
     
-    compileSdk 30
+    compileSdk 34
     defaultConfig {
         minSdk 24
-        targetSdk 28
+        targetSdk 34
     }
 
     buildTypes {
