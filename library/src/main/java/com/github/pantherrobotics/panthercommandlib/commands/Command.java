@@ -13,7 +13,7 @@ public abstract class Command {
     private final HashSet<Subsystem> requiredSubsystems = new HashSet<>();
 
     private Command deadline = null;
-    private final SequentialCommandGroup nextCommands = new SequentialCommandGroup(this);
+    private SequentialCommandGroup nextCommands = null;
 
     /**
      * A Command is code that utilizes subsystems to physically do something on the robot.
@@ -130,6 +130,9 @@ public abstract class Command {
      * @return This returns this Command
      */
     public SequentialCommandGroup andThen(Command command) {
+        if (nextCommands == null) {
+            nextCommands = new SequentialCommandGroup(this);
+        }
         nextCommands.addCommand(command);
 
         return nextCommands;
