@@ -10,12 +10,12 @@ public class StartEndCommand extends Command {
     /**
      * This command will run <code>onInit()</code> immediately when it is run, and then when it is interrupted, it will run <code>onFinish</code>
      *  
-     * @param onInit Code that runs immediatly when command is run
+     * @param onStart Code that runs immediatly when command is run
      * @param onFinish Code that is run immediatly when the command is inturrupted
      * @param requiredSubsystems Any subysystems that this command requires
      */
-    public StartEndCommand(Runnable onInit, Runnable onFinish, Subsystem... requiredSubsystems) {
-        this.onInit = onInit;
+    public StartEndCommand(Runnable onStart, Runnable onFinish, Subsystem... requiredSubsystems) {
+        this.onInit = onStart;
         this.onFinish = onFinish;
 
         addRequiredSubsystems(requiredSubsystems);

@@ -22,6 +22,9 @@ public class Trigger {
     Command commandOnTrue;
     Command commandOnFalse;
 
+    // Whether or not to force run commands
+    boolean forceRunCommands;
+
     public Trigger(BooleanSupplier condition) {
         this.andConditions = new ArrayList<>();
         this.orConditions = new ArrayList<>();
@@ -35,6 +38,8 @@ public class Trigger {
         commandWhileTrue = new InstantCommand();
         commandOnFalse = new InstantCommand();
         commandOnTrue = new InstantCommand();
+
+        forceRunCommands = false;
 
         TriggerHandler.addTrigger(this);
     }
@@ -60,6 +65,13 @@ public class Trigger {
         orConditions.add(condition);
 
         return this;
+    }
+
+    /**
+     * This will force run the commands with this trigger.
+     */
+    public void forceRunCommands() {
+        this.forceRunCommands = true;
     }
 
     /**
@@ -129,23 +141,39 @@ public class Trigger {
         // -------------------------------
 
         // On True
-        if (!previousValue && currentValue && !CommandRunner.getCommandsRunning().contains(commandOnTrue)) {
-            commandOnTrue.run();
+        if ((!previousValue) && currentValue) {
+            if (!CommandRunner.getCommandsRunning().contains(commandOnTrue)) {
+                if (forceRunCommands) {
+                    commandOnTrue.forceRun();
+                } else {
+                    commandOnTrue.run();
+                }
+            }
         }
 
         // -------------------------------
 
         // On False
-        if (previousValue && !currentValue && !CommandRunner.getCommandsRunning().contains(commandOnFalse)) {
-            commandOnFalse.run();
+        if (previousValue && (!currentValue)) {
+            if (!CommandRunner.getCommandsRunning().contains(commandOnFalse)) {
+                if (forceRunCommands) {
+                    commandOnFalse.forceRun();
+                } else {
+                    commandOnFalse.run();
+                }
+            }
         }
 
         // -------------------------------
 
         // While True
-        if (currentValue) {
+        if (currentValue && previousValue) {
             if (!CommandRunner.getCommandsRunning().contains(commandWhileTrue)) {
-                commandWhileTrue.run();
+                if (forceRunCommands) {
+                    commandWhileTrue.forceRun();
+                } else {
+                    commandWhileTrue.run();
+                }
             }
         } else {
             CommandRunner.forceEndCommand(commandWhileTrue);
@@ -154,9 +182,14 @@ public class Trigger {
         // -------------------------------
 
         // While False
-        if (!currentValue) {
+        if (!currentValue && !previousValue) {
             if (!CommandRunner.getCommandsRunning().contains(commandWhileFalse)) {
-                commandWhileFalse.run();
+
+                if (forceRunCommands) {
+                    commandWhileFalse.forceRun();
+                } else {
+                    commandWhileFalse.run();
+                }
             }
         } else {
             CommandRunner.forceEndCommand(commandWhileFalse);

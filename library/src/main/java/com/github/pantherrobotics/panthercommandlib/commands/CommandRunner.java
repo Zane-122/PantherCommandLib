@@ -2,6 +2,7 @@ package com.github.pantherrobotics.panthercommandlib.commands;
 
 import android.util.Pair;
 
+import com.github.pantherrobotics.panthercommandlib.PantherCommandLib;
 import com.github.pantherrobotics.panthercommandlib.subsystems.Subsystem;
 import com.github.pantherrobotics.panthercommandlib.subsystems.SubsystemManager;
 
@@ -21,7 +22,7 @@ public class CommandRunner {
      */
     @SuppressWarnings("all")
     public static boolean runCommand(Command command) {
-        if (commandsRunning.contains(command)) return false;
+        if (command == null || commandsRunning.contains(command)) return false;
 
         HashSet<Subsystem> requiredSubsystems = command.getRequiredSubsystems();
 
@@ -56,41 +57,42 @@ public class CommandRunner {
      * @param command The command that you want to run. If the command that runs
      */
     public static void forceRunCommand(Command command) {
-        if (commandsRunning.contains(command)) return;
-
-        boolean interruptedAnotherCommand = false;
+        if (command == null || commandsRunning.contains(command)) return;
 
         HashSet<Subsystem> requiredSubsystems = command.getRequiredSubsystems();
 
-        for (Command runningCommand : new HashSet<>(commandsRunning)) {
-            for (Subsystem sub : requiredSubsystems) {
-                if (runningCommand.usingSubsystem(sub)) {
-                    endCommand(runningCommand, true);
-
-                    interruptedAnotherCommand = true;
+        for (Command commandRunning : new HashSet<>(commandsRunning)) {
+            for (Subsystem requiredSubsystem : new HashSet<>(requiredSubsystems)) {
+                if (commandRunning.usingSubsystem(requiredSubsystem)) {
+                    commandRunning.forceEnd();
                     break;
                 }
             }
         }
 
-        if (!interruptedAnotherCommand) {
-            for (Subsystem sub : requiredSubsystems) {
-                sub.getDefaultCommand().onFinish(true);
-            }
+        for (Subsystem sub : requiredSubsystems) {
+            sub.getDefaultCommand().onFinish(true);
         }
 
-        subsystemsInUse.addAll(requiredSubsystems);
+        subsystemsInUse.addAll(command.getRequiredSubsystems());
         commandsRunning.add(command);
+
         command.init();
+
+        Command deadlineCommand = command.getDeadlineCommand();
+
+        if (!(deadlineCommand == null)) {
+            forceRunCommand(deadlineCommand);
+        }
     }
 
     /**
      * This updates all commands
      */
-    public static void executeCommands() {
+    public static void executeCommands(boolean disableDefaultCommands) {
         HashSet<Pair<Command, Boolean>> toEnd = new HashSet<>();
 
-        for (Command command : commandsRunning) {
+        for (Command command : new HashSet<>(commandsRunning)) {
             if (command.isFinished()) {
                 toEnd.add(new Pair<>(command, false));
             } else {
@@ -108,9 +110,11 @@ public class CommandRunner {
             endCommand(command.first, command.second);
         }
 
-        for (Subsystem sub : SubsystemManager.getSubsystems()) {
-            if (!subsystemsInUse.contains(sub)) {
-                sub.getDefaultCommand().update();
+        if (!disableDefaultCommands) {
+            for (Subsystem sub : SubsystemManager.getSubsystems()) {
+                if (!subsystemsInUse.contains(sub)) {
+                    sub.getDefaultCommand().update();
+                }
             }
         }
     }
@@ -121,7 +125,7 @@ public class CommandRunner {
      * @param interrupted Whether or not you interrupted that command with another one
      */
     private static void endCommand(Command command, boolean interrupted) {
-        if (!commandsRunning.contains(command)) return;
+        if (command == null || !commandsRunning.contains(command)) return;
 
         for (Subsystem s : command.getRequiredSubsystems()) {
             subsystemsInUse.remove(s);

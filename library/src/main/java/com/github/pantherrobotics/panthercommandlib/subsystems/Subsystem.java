@@ -1,9 +1,13 @@
 package com.github.pantherrobotics.panthercommandlib.subsystems;
 
+import com.github.pantherrobotics.panthercommandlib.GlobalTelemetry;
+import com.github.pantherrobotics.panthercommandlib.commands.standardcommands.IdleCommand;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.github.pantherrobotics.panthercommandlib.commands.Command;
 import com.github.pantherrobotics.panthercommandlib.commands.standardcommands.InstantCommand;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public abstract class Subsystem {
     // Hardware map for the devices
@@ -12,9 +16,13 @@ public abstract class Subsystem {
     // Default Command
     private Command defaultCommand;
 
+    public Telemetry telemetry;
+
     public Subsystem(HardwareMap hardwareMap) {
+        this.defaultCommand = new IdleCommand();
+
+        this.telemetry = GlobalTelemetry.get();
         this.hardwareMap = hardwareMap;
-        this.defaultCommand = new InstantCommand();
 
         SubsystemManager.addSubsystem(this);
     }

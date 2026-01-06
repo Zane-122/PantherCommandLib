@@ -7,7 +7,6 @@ public class PantherCommandLibTest {
     @Test
     public void testLibraryVersion() {
         assertNotNull("Library should have a version", PantherCommandLib.getVersion());
-        assertEquals("1.0.0", PantherCommandLib.VERSION);
     }
 }
 

@@ -1,5 +1,8 @@
 package com.github.pantherrobotics.panthercommandlib.commands;
 
+import com.github.pantherrobotics.panthercommandlib.commands.commandgroups.SequentialCommandGroup;
+import com.github.pantherrobotics.panthercommandlib.subsystems.Subsystem;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,13 +30,40 @@ public abstract class CommandGroup extends Command {
         return this;
     }
 
+    /**
+     * Use this to add multiple
+     * @param newCommands
+     * @return
+     */
+    public CommandGroup addCommands(Command... newCommands) {
+        commands.addAll(Arrays.stream(newCommands).collect(Collectors.toList()));
+
+        return this;
+    }
+
+
+    /**
+     * gets the commands in this group
+     * @return the commands
+     */
+    public List<Command> getCommands() {
+        return commands;
+    }
+
     @Override
     public final void onFinish(boolean commandInterrupted) {
         for (Command command : commands) {
-            if (!CommandRunner.getCommandsRunning().contains(command)) {
+            if (CommandRunner.getCommandsRunning().contains(command)) {
                 command.forceEnd();
             }
         }
+    }
+
+    @Override
+    public SequentialCommandGroup andThen(Command command) {
+        this.addCommand(command);
+
+        return new SequentialCommandGroup(this);
     }
 
     @Override

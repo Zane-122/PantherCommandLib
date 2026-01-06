@@ -33,7 +33,7 @@ android {
     publishing {
         singleVariant('release') {
             withSourcesJar()
-            withJavadocJar()
+            // withJavadocJar()
         }
     }
 
@@ -49,13 +49,13 @@ dependencies {
     compileOnly 'org.firstinspires.ftc:FtcCommon:10.1.0'
 
     // Android dependencies
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    compileOnly 'androidx.appcompat:appcompat:1.2.0'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
 }
 
-// Publishing setup for both JitPack + local Maven
+// Publishing setup for local Maven
 afterEvaluate {
     publishing {
         publications {
@@ -64,7 +64,7 @@ afterEvaluate {
 
                 groupId = 'com.github.pantherrobotics'
                 artifactId = 'panthercommandlib'
-                version = '1.0.0'
+                version = '0.0.1'
 
                 pom {
                     name = 'PantherCommandLib'

@@ -1,9 +1,12 @@
 package com.github.pantherrobotics.panthercommandlib.commands;
 
+import com.github.pantherrobotics.panthercommandlib.GlobalTelemetry;
 import com.github.pantherrobotics.panthercommandlib.commands.commandgroups.RaceCommandGroup;
 import com.github.pantherrobotics.panthercommandlib.commands.commandgroups.SequentialCommandGroup;
 import com.github.pantherrobotics.panthercommandlib.commands.standardcommands.InstantCommand;
 import com.github.pantherrobotics.panthercommandlib.subsystems.Subsystem;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,13 +18,17 @@ public abstract class Command {
     private Command deadline = null;
     private SequentialCommandGroup nextCommands = null;
 
+    public Telemetry telemetry;
+
     /**
      * A Command is code that utilizes subsystems to physically do something on the robot.
      * You must call <code>addRequiredSubsystems()</code> and put every subsystem you use to ensure this
      * doesn't conflict with other commands.
      * You should run <code>addRequiredSubsystems()</code> here.
      */
-    public Command() {}
+    public Command() {
+        telemetry = GlobalTelemetry.get();
+    }
 
     /**
      * The init function should be runniang code that you want to happen right when the command is started.

@@ -15,6 +15,14 @@ public class RaceCommandGroup extends CommandGroup {
 
     @Override
     public final void init() {
+        end = false;
+        
+        // If no commands, finish immediately
+        if (commands.isEmpty()) {
+            end = true;
+            return;
+        }
+        
         for (Command command : commands) {
             CommandRunner.forceRunCommand(command);
         }

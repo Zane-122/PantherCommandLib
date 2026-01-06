@@ -1,5 +1,7 @@
 package com.github.pantherrobotics.panthercommandlib.util;
 
+import com.github.pantherrobotics.panthercommandlib.GlobalTelemetry;
+
 public class Timer {
     private long startTime;
     private long stopTime;
